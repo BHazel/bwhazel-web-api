@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace BWHazel.Api
 {
@@ -11,6 +15,10 @@ namespace BWHazel.Api
     /// </summary>
     public class Startup
     {
+        private const string ApiTitleKey = "Api:Title";
+        private const string ApiVersionKey = "Api:Version";
+        private const string ApiDescriptionKey = "Api:Description";
+
         /// <summary>
         /// Initialises a new instance of the <see cref="Startup"/> class.
         /// </summary>
@@ -32,6 +40,18 @@ namespace BWHazel.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSwaggerGen(config =>
+            {
+                config.IncludeXmlComments(this.GetXmlDocumentationFilePath());
+                config.SwaggerDoc(
+                    "api",
+                    new OpenApiInfo()
+                    {
+                        Title = this.Configuration[ApiTitleKey],
+                        Version = this.Configuration[ApiVersionKey],
+                        Description = this.Configuration[ApiDescriptionKey]
+                    });
+            });
         }
 
         /// <summary>
@@ -47,12 +67,32 @@ namespace BWHazel.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(config =>
+            {
+                config.SwaggerEndpoint(
+                    "/swagger/api/swagger.json",
+                    $"{this.Configuration[ApiTitleKey]} {this.Configuration[ApiVersionKey]}");
+            });
+
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }
+
+        /// <summary>
+        /// Gets the path to the XML documentation file.
+        /// </summary>
+        /// <returns>The XML documentation file path.</returns>
+        private string GetXmlDocumentationFilePath()
+        {
+            string xmlDocumentationFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            string xmlDocumentationFilePath = Path.Combine(AppContext.BaseDirectory, xmlDocumentationFile);
+            return xmlDocumentationFilePath;
         }
     }
 }
