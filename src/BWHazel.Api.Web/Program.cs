@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace BWHazel.Api
+namespace BWHazel.Api.Web
 {
     /// <summary>
     /// Main program logic.

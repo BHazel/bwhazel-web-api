@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-namespace BWHazel.Api
+namespace BWHazel.Api.Web
 {
     /// <summary>
     /// Configures the application on startup.
