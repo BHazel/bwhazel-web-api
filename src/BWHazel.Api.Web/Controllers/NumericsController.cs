@@ -18,6 +18,8 @@ namespace BWHazel.Api.Web.Controllers
         /// </summary>
         /// <param name="number">The decimal number.</param>
         /// <returns>The number as binary.</returns>
+        /// <response code="200">Returns the binary number.</response>
+        /// <response code="400">The input number is invalid.</response>
         [HttpGet]
         [Route("convert/{number}/binary")]
         public ActionResult<string> ToBinary(int number)
@@ -45,6 +47,8 @@ namespace BWHazel.Api.Web.Controllers
         /// Please use "/api/numerics/convert/{number}/binary" instead.
         /// </remarks>
         /// <returns>The number as binary.</returns>
+        /// <response code="200">Returns the binary number.</response>
+        /// <response code="400">The input number is invalid.</response>
         [Obsolete]
         [HttpGet]
         [Route("{number}/binary")]
@@ -57,7 +61,9 @@ namespace BWHazel.Api.Web.Controllers
         /// Gets the binary representation of a number as a collection of booleans.
         /// </summary>
         /// <param name="number">The decimal number.</param>
-        /// <returns>The number as </returns>
+        /// <returns>The number as a boolean collection.</returns>
+        /// <response code="200">Returns the binary number as a boolean array.</response>
+        /// <response code="400">The input number is invalid.</response>
         [HttpGet]
         [Route("convert/{number}/binary/bits")]
         public ActionResult<bool[]> ToBinaryBits(int number)
@@ -86,7 +92,9 @@ namespace BWHazel.Api.Web.Controllers
         /// Please use "/api/numerics/convert/{number}/binary/bits" instead.
         /// </remarks>
         /// <param name="number">The decimal number.</param>
-        /// <returns>The number as </returns>
+        /// <returns>The number as a boolean collection.</returns>
+        /// <response code="200">Returns the binary number as a boolean array.</response>
+        /// <response code="400">The input number is invalid.</response>
         [Obsolete]
         [HttpGet]
         [Route("{number}/binary/bits")]
@@ -100,6 +108,8 @@ namespace BWHazel.Api.Web.Controllers
         /// </summary>
         /// <param name="number">The binary number.</param>
         /// <returns>The number as decimal.</returns>
+        /// <response code="200">Returns the decimal number.</response>
+        /// <response code="400">The input number is invalid.</response>
         [HttpGet]
         [Route("convert/{number}/decimal")]
         public ActionResult<int> FromBinary(string number)
@@ -124,6 +134,8 @@ namespace BWHazel.Api.Web.Controllers
         /// <param name="number">The number in a specified base.</param>
         /// <param name="numberBase">The base.</param>
         /// <returns>The number as decimal.</returns>
+        /// <response code="200">Returns the decimal number.</response>
+        /// <response code="400">The input number or base is invalid.</response>
         [HttpGet]
         [Route("convert/{number}/decimal/{numberBase}")]
         public ActionResult<int> FromBase(string number, int numberBase)
@@ -155,6 +167,8 @@ namespace BWHazel.Api.Web.Controllers
         /// Please use "/api/numerics/convert/{number}/decimal" instead.
         /// </remarks>
         /// <returns>The number as decimal.</returns>
+        /// <response code="200">Returns the decimal number.</response>
+        /// <response code="400">The input number is invalid.</response>
         [Obsolete]
         [HttpGet]
         [Route("{number}/decimal")]
@@ -168,6 +182,8 @@ namespace BWHazel.Api.Web.Controllers
         /// </summary>
         /// <param name="number">The decimal number.</param>
         /// <returns>The number as octal.</returns>
+        /// <response code="200">Returns the octal number.</response>
+        /// <response code="400">The input number is invalid.</response>
         [HttpGet]
         [Route("convert/{number}/octal")]
         public ActionResult<string> ToOctal(int number)
@@ -191,6 +207,8 @@ namespace BWHazel.Api.Web.Controllers
         /// </summary>
         /// <param name="number">The decimal number.</param>
         /// <returns>The number as hexadecimal.</returns>
+        /// <response code="200">Returns the hexadecimal number.</response>
+        /// <response code="400">The input number is invalid.</response>
         [HttpGet]
         [Route("convert/{number}/hexadecimal")]
         public ActionResult<string> ToHexadecimal(int number)
@@ -215,6 +233,8 @@ namespace BWHazel.Api.Web.Controllers
         /// <param name="number">The decimal number.</param>
         /// <param name="numberBase">The base.</param>
         /// <returns>The number in a specified base.</returns>
+        /// <response code="200">Returns the number in the specified base.</response>
+        /// <response code="400">The input number or base is invalid.</response>
         [HttpGet]
         [Route("convert/{number}/base/{numberBase}")]
         public ActionResult<string> ToBase(int number, int numberBase)
