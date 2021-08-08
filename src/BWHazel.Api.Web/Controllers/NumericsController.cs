@@ -119,6 +119,34 @@ namespace BWHazel.Api.Web.Controllers
         }
 
         /// <summary>
+        /// Converts a number of a specified base into decimal.
+        /// </summary>
+        /// <param name="number">The number in a specified base.</param>
+        /// <param name="numberBase">The base.</param>
+        /// <returns>The number as decimal.</returns>
+        [HttpGet]
+        [Route("convert/{number}/decimal/{numberBase}")]
+        public ActionResult<int> FromBase(string number, int numberBase)
+        {
+            int decimalNumber = default;
+
+            try
+            {
+                decimalNumber = BaseConvert.ToDecimalBase(number, numberBase);
+            }
+            catch (FormatException)
+            {
+                return this.BadRequest($"Input '{number}' is invalid.");
+            }
+            catch (ArgumentException)
+            {
+                return this.BadRequest($"'{numberBase}' is an invalid base.");
+            }
+
+            return this.Ok(decimalNumber);
+        }
+
+        /// <summary>
         /// Converts a binary number into decimal.
         /// </summary>
         /// <param name="number">The binary number.</param>
@@ -133,6 +161,80 @@ namespace BWHazel.Api.Web.Controllers
         public ActionResult<int> FromBinaryLegacy(string number)
         {
             return this.Ok(Convert.ToInt32(number, 2));
+        }
+
+        /// <summary>
+        /// Converts a decimal number into octal.
+        /// </summary>
+        /// <param name="number">The decimal number.</param>
+        /// <returns>The number as octal.</returns>
+        [HttpGet]
+        [Route("convert/{number}/octal")]
+        public ActionResult<string> ToOctal(int number)
+        {
+            string octalNumber = default;
+
+            try
+            {
+                octalNumber = BaseConvert.ToOctal(number);
+            }
+            catch (FormatException)
+            {
+                return this.BadRequest($"Input '{number}' is invalid.");
+            }
+
+            return this.Ok(octalNumber);
+        }
+
+        /// <summary>
+        /// Converts a decimal number into hexadecimal.
+        /// </summary>
+        /// <param name="number">The decimal number.</param>
+        /// <returns>The number as hexadecimal.</returns>
+        [HttpGet]
+        [Route("convert/{number}/hexadecimal")]
+        public ActionResult<string> ToHexadecimal(int number)
+        {
+            string hexadecimalNumber = default;
+
+            try
+            {
+                hexadecimalNumber = BaseConvert.ToHexadecimal(number);
+            }
+            catch (FormatException)
+            {
+                return this.BadRequest($"Input '{number}' is invalid.");
+            }
+
+            return this.Ok(hexadecimalNumber);
+        }
+
+        /// <summary>
+        /// Converts a decimal number into a specified base.
+        /// </summary>
+        /// <param name="number">The decimal number.</param>
+        /// <param name="numberBase">The base.</param>
+        /// <returns>The number in a specified base.</returns>
+        [HttpGet]
+        [Route("convert/{number}/base/{numberBase}")]
+        public ActionResult<string> ToBase(int number, int numberBase)
+        {
+            string baseNumber = default;
+
+            try
+            {
+                baseNumber = BaseConvert.ToTargetBase(number, numberBase);
+            }
+            catch (FormatException)
+            {
+                return this.BadRequest($"Input '{number}' is invalid.");
+            }
+            catch (ArgumentException)
+            {
+                return this.BadRequest($"'{numberBase}' is an invalid base.");
+            }
+
+            return this.Ok(baseNumber);
         }
     }
 }
