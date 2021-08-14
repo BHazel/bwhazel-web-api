@@ -256,5 +256,48 @@ namespace BWHazel.Api.Web.Controllers
 
             return this.Ok(baseNumber);
         }
+
+        /// <summary>
+        /// Indicates whether a number is happy.
+        /// </summary>
+        /// <param name="number">The number.</param>
+        /// <returns><c>true</c> if the number is happy, otherwise <c>false</c>.</returns>
+        /// <response code="200">Returns a boolean to indicate whether the number is happy.</response>
+        [HttpGet]
+        [Route("recreational/{number}/isHappy")]
+        public ActionResult<bool> IsNumberHappy(uint number)
+        {
+            return this.Ok(RecreationalMathematics.IsHappy(number));
+        }
+
+        /// <summary>
+        /// Indicates whether a number is happy.
+        /// </summary>
+        /// <param name="number">The number.</param>
+        /// <remarks>
+        /// This method is now obsolete and shall be removed on 1st January 2022.
+        /// Please use "/api/numerics/recreational/{number}/isHappy" instead.
+        /// </remarks>
+        /// <returns><c>true</c> if the number is happy, otherwise <c>false</c>.</returns>
+        /// <response code="200">Returns a boolean to indicate whether the number is happy.</response>
+        [Obsolete]
+        [HttpGet]
+        [Route("{number}/happy")]
+        public ActionResult<bool> IsNumberHappyLegacy(uint number)
+        {
+            return this.IsNumberHappy(number);
+        }
+
+        /// <summary>
+        /// Gets the numbers indicating an unhappy number.
+        /// </summary>
+        /// <returns>The unhappy number loop.</returns>
+        /// <response code="200">Returns the numbers indicating an unhappy number as an array.</response>
+        [HttpGet]
+        [Route("recreational/unhappyNumbers")]
+        public ActionResult<uint[]> GetUnhappyLoopNumbers()
+        {
+            return this.Ok(RecreationalMathematics.UnhappyLoopNumbers);
+        }
     }
 }
