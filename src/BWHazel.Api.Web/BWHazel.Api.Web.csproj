@@ -4,6 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="npx sass wwwroot/css/site.scss wwwroot/css/site.css" />
+  </Target>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\net5.0\BWHazel.Api.Web.xml</DocumentationFile>
