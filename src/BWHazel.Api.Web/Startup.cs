@@ -39,7 +39,7 @@ namespace BWHazel.Api.Web
         /// <param name="services">The application services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllersWithViews();
             services.AddSwaggerGen(config =>
             {
                 config.IncludeXmlComments(this.GetXmlDocumentationFilePath());
@@ -67,6 +67,7 @@ namespace BWHazel.Api.Web
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseSwagger();
             app.UseSwaggerUI(config =>
@@ -80,6 +81,11 @@ namespace BWHazel.Api.Web
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                );
+
                 endpoints.MapControllers();
             });
         }
