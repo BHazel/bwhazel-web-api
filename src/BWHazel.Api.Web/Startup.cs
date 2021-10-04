@@ -39,6 +39,7 @@ namespace BWHazel.Api.Web
         /// <param name="services">The application services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
             services.AddControllersWithViews();
             services.AddSwaggerGen(config =>
             {
