@@ -16,6 +16,7 @@ namespace BWHazel.Api.Web.Controllers
         /// <param name="carbonAtoms">The number of carbon atoms.</param>
         /// <param name="hydrogenAtoms">The number of hydrogen atoms.</param>
         /// <returns>The double-bond equivalents.</returns>
+        /// <response code="200">Returns the number of double-bond equivalents.</response>
         [HttpGet]
         [Route("dbe/c/{carbonAtoms}/h/{hydrogenAtoms}")]
         public ActionResult<uint> GetDoubleBondEquivalents(uint carbonAtoms, uint hydrogenAtoms)
@@ -30,6 +31,7 @@ namespace BWHazel.Api.Web.Controllers
         /// </summary>
         /// <param name="carbonAtoms">The number of carbon atoms.</param>
         /// <returns>The number of hydrogen atoms.</returns>
+        /// <response code="200">Returns the number of hydrogen atoms.</response>
         [HttpGet]
         [Route("dbe/c/{carbonAtoms}/saturated")]
         public ActionResult<uint> GetHydrogenAtomsInSaturatedCompound(uint carbonAtoms)
