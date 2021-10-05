@@ -27,7 +27,7 @@ jobs:
           echo "buildConfiguration=Release" >> $GITHUB_ENV
       - name: Build Site
         run: |
-          dotnet publish BWHazel.Api.sln -c ${{ env.buildConfiguration }} -o dist
+          dotnet publish src/BWHazel.Api.sln -c ${{ env.buildConfiguration }} -o dist
       - name: Upload Build Artefact
         uses: actions/upload-artifact@v2
         with:
