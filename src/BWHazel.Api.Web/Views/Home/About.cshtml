@@ -1,0 +1,68 @@
+﻿@{
+    this.ViewData["Title"] = "About";
+}
+
+<div class="section no-pad-bot">
+    <div class="container">
+        <h1>About the API</h1>
+        <p>
+            The BWHazel API provides a set of RESTful APIs for third parties to use in their own solutions,
+            whether they be web, desktop or mobile applications.  They cover a variety of functionality, from the
+            useful to down-right entertaining!  All data returned is in JSON and is therefore universal across all
+            platforms.
+        </p>
+        <p>
+            Documentation, including an interactive try-out service, is provided via the Documentation link above.
+            This service is powered by <a href="https://swagger.io">Swagger</a>.
+        </p>
+
+        <h4>Version 2.0 Breaking Changes</h4>
+        <p>
+            <b>
+                Version 2.0 introduces some new naming conventions as well as improved implementations of some existing
+                APIs.  This has resulted in some existing APIs being marked as deprecated and shall be removed on
+                1<sup>st</sup> January 2022.  The majority of these deprecated APIs are being replaced with new
+                endpoints, although a few are not.  Please see the Documentation for further details.
+            </b>
+        </p>
+        <p>
+            <b>
+                Version 2.0 also introduces HTTPS and all API calls should be made via this protocol instead of
+                legacy and insecure HTTP.
+            </b>
+        </p>
+
+        <h4>Available APIs</h4>
+        <p>
+            A high-level summary of the different APIs is outlined in the table below.  For more detailed information
+            on the specific endpoints and how to use them, please select the Documentaiton link above.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>API</td>
+                    <td>Description</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Algebraics</td>
+                    <td>Algebraic operations, currently for linear algebra.</td>
+                </tr>
+                <tr>
+                    <td>Atomics</td>
+                    <td>Calculators for atomic and chemistry-related processes and information.</td>
+                </tr>
+                <tr>
+                    <td>Nucleics</td>
+                    <td>Represents the Central Dogma of Molecular Biology building complimentary DNA, messenger RNA and peptide chains from single-stranded DNA chains.</td>
+                </tr>
+                <tr>
+                    <td>Numerics</td>
+                    <td>Numerical operations ranigng from conversions to recreational mathematics.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

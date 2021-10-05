@@ -1,0 +1,31 @@
+﻿@using Microsoft.Extensions.Configuration
+
+@inject IConfiguration Configuration
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@this.ViewData["Title"] - @this.Configuration["Site:Name"]</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <partial name="_NavSitePartial" />
+    </header>
+
+    <main id="mainContent">
+        @RenderBody()
+    </main>
+
+    <footer class="page-footer">
+        <partial name="_Footer" />
+    </footer>
+    <script src="~/lib/materialize/js/materialize.min.js"></script>
+    <script src="~/js/init.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
