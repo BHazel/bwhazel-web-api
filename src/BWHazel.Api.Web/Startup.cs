@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,6 +17,8 @@ namespace BWHazel.Api.Web
     /// </summary>
     public class Startup
     {
+        private const string KubernetesRootIpKey = "Kubernetes:RootIp";
+        private const string KubernetesClusterIpKey = "Kubernetes:ClusterIp";
         private const string ApiTitleKey = "Api:Title";
         private const string ApiVersionKey = "Api:Version";
         private const string ApiDescriptionKey = "Api:Description";
@@ -39,6 +43,18 @@ namespace BWHazel.Api.Web
         /// <param name="services">The application services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                options.ForwardLimit = 2;
+
+                (string ipAddress, int mask) rootIp = this.GetIpAddressComponents(this.Configuration[KubernetesRootIpKey]);
+                (string ipAddress, int mask) clusterIp = this.GetIpAddressComponents(this.Configuration[KubernetesClusterIpKey]);
+
+                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse(rootIp.ipAddress), rootIp.mask));
+                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse(clusterIp.ipAddress), clusterIp.mask));
+            });
+
             services.AddApplicationInsightsTelemetry();
             services.AddControllersWithViews();
             services.AddSwaggerGen(config =>
@@ -66,10 +82,13 @@ namespace BWHazel.Api.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+                app.UseHttpsRedirection();
+            }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseSwagger();
             app.UseSwaggerUI(config =>
             {
@@ -100,6 +119,17 @@ namespace BWHazel.Api.Web
             string xmlDocumentationFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             string xmlDocumentationFilePath = Path.Combine(AppContext.BaseDirectory, xmlDocumentationFile);
             return xmlDocumentationFilePath;
+        }
+
+        /// <summary>
+        /// Extract an IP address and mask bits.
+        /// </summary>
+        /// <param name="cidrIpAddress">The IP address in CIDR notation.</param>
+        /// <returns>An IP address and mask bits.</returns>
+        private (string, int) GetIpAddressComponents(string cidrIpAddress)
+        {
+            string[] ipAddressComponents = cidrIpAddress.Split('/');
+            return (ipAddressComponents[0], int.Parse(ipAddressComponents[1]));
         }
     }
 }
