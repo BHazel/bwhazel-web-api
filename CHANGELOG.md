@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.0.1 _(09/10/2021)_
+
+* Add HTTPS redirection.
+
 ## v2.0.0 _(05/10/2021)_
 
 * Initial release of version 2 of the site.
