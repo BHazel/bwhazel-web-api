@@ -3,4 +3,4 @@ name: bwhazel-api
 description: Benedict Hazel's public API for use by 3rd parties.
 type: application
 version: 1.0.1
-appVersion: 2.0.1
+appVersion: 2.0.2
