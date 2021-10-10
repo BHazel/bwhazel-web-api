@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.0.2 _(10/10/2021)_
+
+* Update link to the BWHazel Info web site.
+
 ## v2.0.1 _(09/10/2021)_
 
 * Add HTTPS redirection.
