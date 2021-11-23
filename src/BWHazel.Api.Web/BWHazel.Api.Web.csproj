@@ -17,10 +17,10 @@
     <DocumentationFile>bin\Release\net5.0\BWHazel.Api.Web.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.1" />
-    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.17.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.18.0" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.21.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Controllers\" />
