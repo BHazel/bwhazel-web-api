@@ -12,10 +12,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\net6.0\BWHazel.Api.Web.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\net5.0\BWHazel.Api.Web.xml</DocumentationFile>
-  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.1" />
