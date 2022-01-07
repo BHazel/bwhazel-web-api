@@ -65,7 +65,7 @@ public class RealMatrix2
     public double[] GetEigenvalues()
     {
         double a = 1.0;
-        double b = (-1 * (this.matrix[0, 0] - this.matrix[1, 1]));
+        double b = (-1 * (this.matrix[0, 0]) - this.matrix[1, 1]);
         double c = ((-1 * this.matrix[0, 1]) * this.matrix[1, 0])
             + (this.matrix[0, 0] * this.matrix[1, 1]);
 
