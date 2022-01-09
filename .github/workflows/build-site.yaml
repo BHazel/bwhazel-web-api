@@ -30,7 +30,7 @@ jobs:
           dotnet publish src/BWHazel.Api.sln -c ${{ env.buildConfiguration }} -o dist
       - name: Test Site
         run: |
-          dotnet test --no-restore --verbosity normal
+          dotnet test src/BWHazel.Api.sln --no-restore --verbosity normal
       - name: Upload Build Artefact
         uses: actions/upload-artifact@v2
         with:
