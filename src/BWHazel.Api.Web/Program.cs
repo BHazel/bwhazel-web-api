@@ -17,14 +17,17 @@ Host.CreateDefaultBuilder(args)
             .AddEnvironmentVariables()
             .Build();
 
-        config.AddAzureKeyVault(
+        if (!context.HostingEnvironment.IsEnvironment("Test"))
+        {
+            config.AddAzureKeyVault(
             new Uri($"https://{rootConfig[SecretsKeyVaultKey]}.vault.azure.net"),
-            new ClientSecretCredential(
-                rootConfig[AzureAdTenantIdKey],
-                rootConfig[AzureAdClientIdKey],
-                rootConfig[AzureAdClientSecretKey]
-            )
-        );
+                new ClientSecretCredential(
+                    rootConfig[AzureAdTenantIdKey],
+                    rootConfig[AzureAdClientIdKey],
+                    rootConfig[AzureAdClientSecretKey]
+                )
+            );
+        }
     })
     .ConfigureWebHostDefaults(webBuilder =>
     {
