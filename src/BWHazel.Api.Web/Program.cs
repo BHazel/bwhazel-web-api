@@ -3,53 +3,35 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Azure.Identity;
+using BWHazel.Api.Web;
 
-namespace BWHazel.Api.Web
-{
-    /// <summary>
-    /// Main program logic.
-    /// </summary>
-    public static class Program
+const string AzureAdTenantIdKey = "AzureAD:TenantId";
+const string AzureAdClientIdKey = "AzureAD:ClientId";
+const string AzureAdClientSecretKey = "AzureAD:ClientSecret";
+const string SecretsKeyVaultKey = "Secrets:KeyVault";
+
+Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((context, config) =>
     {
-        private const string AzureAdTenantIdKey = "AzureAD:TenantId";
-        private const string AzureAdClientIdKey = "AzureAD:ClientId";
-        private const string AzureAdClientSecretKey = "AzureAD:ClientSecret";
-        private const string SecretsKeyVaultKey = "Secrets:KeyVault";
+        IConfigurationRoot rootConfig = config
+            .AddEnvironmentVariables()
+            .Build();
 
-        /// <summary>
-        /// Program entry point.
-        /// </summary>
-        /// <param name="args">The command-line arguments.</param>
-        public static void Main(string[] args)
+        if (!context.HostingEnvironment.IsEnvironment("Test"))
         {
-            CreateHostBuilder(args).Build().Run();
+            config.AddAzureKeyVault(
+            new Uri($"https://{rootConfig[SecretsKeyVaultKey]}.vault.azure.net"),
+                new ClientSecretCredential(
+                    rootConfig[AzureAdTenantIdKey],
+                    rootConfig[AzureAdClientIdKey],
+                    rootConfig[AzureAdClientSecretKey]
+                )
+            );
         }
-
-        /// <summary>
-        /// Creates the host builder.
-        /// </summary>
-        /// <param name="args">The command-linr arguments.</param>
-        /// <returns>The host builder.</returns>
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((context, config) =>
-                {
-                    IConfigurationRoot rootConfig = config
-                        .AddEnvironmentVariables()
-                        .Build();
-
-                    config.AddAzureKeyVault(
-                        new Uri($"https://{rootConfig[SecretsKeyVaultKey]}.vault.azure.net"),
-                        new ClientSecretCredential(
-                            rootConfig[AzureAdTenantIdKey],
-                            rootConfig[AzureAdClientIdKey],
-                            rootConfig[AzureAdClientSecretKey]
-                        )
-                    );
-                })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
-}
+    })
+    .ConfigureWebHostDefaults(webBuilder =>
+    {
+        webBuilder.UseStartup<Startup>();
+    })
+    .Build()
+    .Run();
