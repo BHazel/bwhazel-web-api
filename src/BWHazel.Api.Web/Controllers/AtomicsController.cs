@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using BWHazel.Api.Core.Atomics;
 
 namespace BWHazel.Api.Web.Controllers;
@@ -19,11 +20,18 @@ public class AtomicsController : Controller
     /// <response code="200">Returns the number of double-bond equivalents.</response>
     [HttpGet]
     [Route("dbe/c/{carbonAtoms}/h/{hydrogenAtoms}")]
-    public ActionResult<uint> GetDoubleBondEquivalents(uint carbonAtoms, uint hydrogenAtoms)
+    public ActionResult<double> GetDoubleBondEquivalents(uint carbonAtoms, uint hydrogenAtoms)
     {
         Hydrocarbon hydrocarbon = new(carbonAtoms, hydrogenAtoms);
-        uint doubleBondEquivalents = hydrocarbon.GetDoubleBondEquivalents();
-        return this.Ok(doubleBondEquivalents);
+        try
+        {
+            double doubleBondEquivalents = hydrocarbon.GetDoubleBondEquivalents();
+            return this.Ok(doubleBondEquivalents);
+        }
+        catch (ArithmeticException ex)
+        {
+            return this.BadRequest(ex.Message);
+        }
     }
 
     /// <summary>

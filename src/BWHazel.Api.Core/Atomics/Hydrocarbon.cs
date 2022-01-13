@@ -1,4 +1,6 @@
-﻿namespace BWHazel.Api.Core.Atomics;
+﻿using System;
+
+namespace BWHazel.Api.Core.Atomics;
 
 /// <summary>
 /// Represents a hydrocarbon compound.
@@ -8,11 +10,11 @@ public class Hydrocarbon
     /// <summary>
     /// Initialises a new instance of the <see cref="Hydrocarbon"/> class.
     /// </summary>
-    /// <param name="carbonAroms">The number of carbon atoms.</param>
+    /// <param name="carbonAtoms">The number of carbon atoms.</param>
     /// <param name="hydrogenAtoms">The number of hydrogen atoms.</param>
-    public Hydrocarbon(uint carbonAroms, uint hydrogenAtoms)
+    public Hydrocarbon(uint carbonAtoms, uint hydrogenAtoms)
     {
-        this.CarbonAtoms = carbonAroms;
+        this.CarbonAtoms = carbonAtoms;
         this.HydrogenAtoms = hydrogenAtoms;
     }
 
@@ -30,10 +32,16 @@ public class Hydrocarbon
     /// Gets the number of double-bond equivalents.
     /// </summary>
     /// <returns>The number of double-bond equivalents.</returns>
-    public uint GetDoubleBondEquivalents()
+    /// <exception cref="ArithmeticException">Exception thrown when the number of hydrogen atoms is larger than in the saturated compound.</exception>
+    public double GetDoubleBondEquivalents()
     {
         uint hydrogenAtomsInSaturatedCompound = this.GetHydrogenAtomsInSaturatedCompound();
-        return (hydrogenAtomsInSaturatedCompound - this.HydrogenAtoms) / 2;
+        if (hydrogenAtomsInSaturatedCompound < this.HydrogenAtoms)
+        {
+            throw new ArithmeticException("The number of hydrogen atoms is larger than in the saturated compound.");
+        }
+
+        return (hydrogenAtomsInSaturatedCompound - this.HydrogenAtoms) / 2.0;
     }
 
     /// <summary>
