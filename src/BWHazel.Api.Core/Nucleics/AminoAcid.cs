@@ -23,9 +23,9 @@ public class AminoAcid
     /// <summary>
     /// Initialises a new instance of the <see cref="AminoAcid"/> class.
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="code"></param>
-    /// <param name="codeTriple"></param>
+    /// <param name="name">The name.</param>
+    /// <param name="code">The single character code.</param>
+    /// <param name="codeTriple">The triple character code.</param>
     public AminoAcid(string name, char code, string codeTriple)
     {
         this.Name = name;

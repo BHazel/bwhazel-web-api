@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents naturally occuring amino acids and representative codons.
 /// </summary>
-public static class NaturalAminoAcids
+public static class NaturalCodons
 {
     private static AminoAcid StopPseudoAcid => new("STOP", '/', "STOP");
 

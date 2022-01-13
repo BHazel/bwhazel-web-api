@@ -23,11 +23,11 @@ public class CentralDogma
     /// Initialises a new instance of the <see cref="CentralDogma"/> class.
     /// </summary>
     /// <remarks>
-    /// The natually-occuring codons defined in the <see cref="NaturalAminoAcids"/> class
+    /// The natually-occuring codons defined in the <see cref="NaturalCodons"/> class
     /// are used for the codon mappings.
     /// </remarks>
     public CentralDogma()
-        : this(NaturalAminoAcids.Codons)
+        : this(NaturalCodons.Codons)
     {
     }
 
@@ -153,7 +153,14 @@ public class CentralDogma
     /// <returns><c>true</c> if the strand is valid, otherwise <c>false</c>.</returns>
     public bool IsNucleicAcidValidBases(string strand)
     {
-        return Regex.IsMatch(strand, DnaStrandPattern) ^ Regex.IsMatch(strand, RnaStrandPattern);
+        if (Regex.IsMatch(strand, DnaStrandPattern) && Regex.IsMatch(strand, RnaStrandPattern))
+        {
+            return true;
+        }
+        else
+        {
+            return Regex.IsMatch(strand, DnaStrandPattern) ^ Regex.IsMatch(strand, RnaStrandPattern);
+        }
     }
 
     /// <summary>
@@ -163,6 +170,6 @@ public class CentralDogma
     /// <returns><c>true</c> if the strand is valid, otherwise <c>false</c>.</returns>
     public bool IsNucleicAcidValidLengthForPeptides(string strand)
     {
-        return strand.Length % 3 == 0;
+        return strand.Length > 0 && strand.Length % 3 == 0;
     }
 }
