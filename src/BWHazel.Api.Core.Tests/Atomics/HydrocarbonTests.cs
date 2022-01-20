@@ -14,7 +14,7 @@ public class HydrocarbonTests
     /// Tests that the <see cref="Hydrocarbon"/> class constructor sets the correct atom values.
     /// </summary>
     [Fact]
-    public void Constructor_SetsCorrectAtomtValues()
+    public void Constructor_SetsCorrectAtomValues()
     {
         uint carbonAtoms = 2;
         uint hydrogenAtoms = 6;
