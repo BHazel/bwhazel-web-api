@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -23,11 +24,11 @@ public class CentralDogma
     /// Initialises a new instance of the <see cref="CentralDogma"/> class.
     /// </summary>
     /// <remarks>
-    /// The natually-occuring codons defined in the <see cref="NaturalAminoAcids"/> class
+    /// The natually-occuring codons defined in the <see cref="NaturalCodons"/> class
     /// are used for the codon mappings.
     /// </remarks>
     public CentralDogma()
-        : this(NaturalAminoAcids.Codons)
+        : this(NaturalCodons.Codons)
     {
     }
 
@@ -68,7 +69,7 @@ public class CentralDogma
     /// <returns></returns>
     public string GetPeptide(string ssDnaStrand, bool tripleCode)
     {
-        return this.GetPeptide(ssDnaStrand, DefaultUnknownSingleCharacter.ToString(), tripleCode);
+        return this.GetPeptide(ssDnaStrand.Replace('U', 'T'), DefaultUnknownSingleCharacter.ToString(), tripleCode);
     }
 
     /// <summary>
@@ -110,7 +111,7 @@ public class CentralDogma
     /// <returns>The peptide chain.</returns>
     public string GetPeptide(string strand, string unknown, bool tripleCode = false)
     {
-        StringBuilder peptideChainBuilder = new();
+        List<string> aminoAcids = new();
         string currentPeptideCode = default;
         for (int i = 0; i < strand.Length; i += 3)
         {
@@ -118,8 +119,7 @@ public class CentralDogma
             {
                 string codonString =
                     strand
-                        .Substring(i, 3)
-                        .Replace('U', 'T');
+                        .Substring(i, 3);
 
                 Codon codon =
                     this.Codons
@@ -128,7 +128,7 @@ public class CentralDogma
                 if (codon != null)
                 {
                     currentPeptideCode = tripleCode ?
-                        $"{codon.AminoAcid.CodeTriple} " : codon.AminoAcid.Code.ToString();
+                        codon.AminoAcid.CodeTriple : codon.AminoAcid.Code.ToString();
                 }
                 else
                 {
@@ -140,10 +140,11 @@ public class CentralDogma
                 currentPeptideCode = unknown;
             }
 
-            peptideChainBuilder.Append(currentPeptideCode);
+            aminoAcids.Add(currentPeptideCode);
         }
 
-        return peptideChainBuilder.ToString();
+        string aminoAcidJoin = tripleCode ? " " : "";
+        return string.Join(aminoAcidJoin, aminoAcids);
     }
 
     /// <summary>
@@ -153,7 +154,19 @@ public class CentralDogma
     /// <returns><c>true</c> if the strand is valid, otherwise <c>false</c>.</returns>
     public bool IsNucleicAcidValidBases(string strand)
     {
-        return Regex.IsMatch(strand, DnaStrandPattern) ^ Regex.IsMatch(strand, RnaStrandPattern);
+        if (strand.Length == 0)
+        {
+            return false;
+        }
+
+        if (Regex.IsMatch(strand, DnaStrandPattern) && Regex.IsMatch(strand, RnaStrandPattern))
+        {
+            return true;
+        }
+        else
+        {
+            return Regex.IsMatch(strand, DnaStrandPattern) ^ Regex.IsMatch(strand, RnaStrandPattern);
+        }
     }
 
     /// <summary>
@@ -163,6 +176,6 @@ public class CentralDogma
     /// <returns><c>true</c> if the strand is valid, otherwise <c>false</c>.</returns>
     public bool IsNucleicAcidValidLengthForPeptides(string strand)
     {
-        return strand.Length % 3 == 0;
+        return strand.Length > 0 && strand.Length % 3 == 0;
     }
 }
