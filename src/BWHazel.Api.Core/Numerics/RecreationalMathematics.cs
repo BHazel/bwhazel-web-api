@@ -21,6 +21,11 @@ public static class RecreationalMathematics
     /// <returns><c>true</c> if the number is happy, otherwise <c>false</c>.</returns>
     public static bool IsHappy(uint number)
     {
+        if (number == 0)
+        {
+            throw new ArgumentException("Number must be greater than 0.");
+        }
+
         bool isHappinessDetermined = false;
         uint currentNumber = number;
 
@@ -47,6 +52,11 @@ public static class RecreationalMathematics
     /// <returns>The pizza volume.</returns>
     public static double GetPizzaVolume(double thickness, double radius)
     {
+        if (thickness <= 0 || radius <= 0)
+        {
+            throw new ArgumentException("Thickness and radius must be greater than 0.");
+        }
+
         return Math.PI * Math.Pow(radius, 2) * thickness;
     }
 

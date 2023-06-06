@@ -16,8 +16,8 @@ public static class BitStringConvert
     /// Converts a binary number in string representation into a collection of booleans.
     /// </summary>
     /// <param name="binaryNumber">The binary number.</param>
-    /// <returns>A collection of booleans.</returns>
-    public static IEnumerable<bool> GetBits(string binaryNumber)
+    /// <returns>An array of booleans.</returns>
+    public static bool[] GetBits(string binaryNumber)
     {
         if (!Regex.IsMatch(binaryNumber, BinaryNumberPattern))
         {
@@ -25,6 +25,7 @@ public static class BitStringConvert
         }
 
         return binaryNumber
-            .Select(bit => bit == '1' ? true : false);
+            .Select(bit => bit == '1' ? true : false)
+            .ToArray();
     }
 }

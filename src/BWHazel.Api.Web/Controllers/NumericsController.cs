@@ -65,8 +65,7 @@ public class NumericsController : Controller
         try
         {
             string binaryNumber = BaseConvert.ToBinary(number);
-            IEnumerable<bool> binaryBits = BitStringConvert.GetBits(binaryNumber);
-            bits = binaryBits.ToArray();
+            bits = BitStringConvert.GetBits(binaryNumber);
         }
         catch (FormatException)
         {
@@ -217,11 +216,23 @@ public class NumericsController : Controller
     /// <param name="number">The number.</param>
     /// <returns><c>true</c> if the number is happy, otherwise <c>false</c>.</returns>
     /// <response code="200">Returns a boolean to indicate whether the number is happy.</response>
+    /// <response code="400">The number is 0 or negative.</response>
     [HttpGet]
     [Route("recreational/{number}/isHappy")]
     public ActionResult<bool> IsNumberHappy(uint number)
     {
-        return this.Ok(RecreationalMathematics.IsHappy(number));
+        bool isHappy = default;
+
+        try
+        {
+            isHappy = RecreationalMathematics.IsHappy(number);
+        }
+        catch (ArgumentException)
+        {
+            return this.BadRequest("Number must be greater than 0.");
+        }
+
+        return this.Ok(isHappy);
     }
 
     /// <summary>
@@ -234,5 +245,31 @@ public class NumericsController : Controller
     public ActionResult<uint[]> GetUnhappyLoopNumbers()
     {
         return this.Ok(RecreationalMathematics.UnhappyLoopNumbers);
+    }
+
+    /// <summary>
+    /// Gets the volume of a pizza.
+    /// </summary>
+    /// <param name="thickness">The pizza thickness.</param>
+    /// <param name="radius">The pizza radius.</param>
+    /// <returns>The pizza volume.</returns>
+    /// <response code="200">Returns the pizza volume.</response>
+    /// <response code="400">The thickness or radius are 0 or negative.</response>
+    [HttpGet]
+    [Route("recreational/pizzaVolume/thickness/{thickness}/radius/{radius}")]
+    public ActionResult<double> GetPizzaVolume(double thickness, double radius)
+    {
+        double pizzaThickness = default;
+
+        try
+        {
+            pizzaThickness = RecreationalMathematics.GetPizzaVolume(thickness, radius);
+        }
+        catch (ArgumentException)
+        {
+            return this.BadRequest("Thickness and radius must be greater than 0.");
+        }
+
+        return this.Ok(pizzaThickness);
     }
 }

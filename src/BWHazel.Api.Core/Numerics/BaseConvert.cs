@@ -9,6 +9,7 @@ public static class BaseConvert
 {
     private const int BinaryBase = 2;
     private const int OctalBase = 8;
+    private const int DecimalBase = 10;
     private const int HexadecimalBase = 16;
 
     /// <summary>
@@ -19,6 +20,7 @@ public static class BaseConvert
     /// <returns>The number in decimal base.</returns>
     public static int ToDecimalBase(string number, int numberBase)
     {
+        ValidateBase(numberBase);
         return Convert.ToInt32(number, numberBase);
     }
 
@@ -91,5 +93,26 @@ public static class BaseConvert
     public static int FromHexadecimal(string number)
     {
         return ToDecimalBase(number, HexadecimalBase);
+    }
+
+    /// <summary>
+    /// Determines if a base is valid.
+    /// </summary>
+    /// <param name="numberBase">The base.</param>
+    private static void ValidateBase(int numberBase)
+    {
+        bool isValid = numberBase switch
+        {
+            BinaryBase => true,
+            OctalBase => true,
+            DecimalBase => true,
+            HexadecimalBase => true,
+            _ => false
+        };
+
+        if (isValid == false)
+        {
+            throw new ArgumentException($"Base {numberBase} is not supported.");
+        }
     }
 }
